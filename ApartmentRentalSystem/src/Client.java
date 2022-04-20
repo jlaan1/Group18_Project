@@ -7,6 +7,11 @@ import java.sql.Statement;
 
 public class Client {
 
+	/**
+	 * Method to establish connection with SQLite database
+	 * 
+	 * @return Connection conn with SQLite database
+	 */
 	private Connection connect() {
 		// SQLite connection string
 		String url = "jdbc:sqlite://Users/ljialei/Documents/Boston University/Junior/Spring 2022/"
@@ -20,6 +25,17 @@ public class Client {
 		return conn;
 	}
 
+	/**
+	 * Method to insert new clients into clients database
+	 * 
+	 * @param clientID   unique ID of the client
+	 * @param username   unique username of the client
+	 * @param fName      first name
+	 * @param lName      last name
+	 * @param contactNum contact number
+	 * @param email      email address
+	 * @param age        client age
+	 */
 	public void insert(int clientID, String username, String fName, String lName, String contactNum, String email,
 			int age) {
 
@@ -40,6 +56,9 @@ public class Client {
 
 	}
 
+	/**
+	 * Method to display existing clients currently in clients database
+	 */
 	public void display() {
 
 		try {
