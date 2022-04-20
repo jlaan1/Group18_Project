@@ -7,6 +7,70 @@ import java.sql.Statement;
 
 public class Client {
 
+	private int clientID;
+	private int age;
+	private String username;
+	private String firstName;
+	private String lastName;
+	private String contactNum;
+	private String email;
+
+	/**
+	 * Method to initialize or change clientID
+	 * 
+	 * @param id unique client ID
+	 */
+	public void setID(int id) {
+		clientID = id;
+	}
+
+	/**
+	 * Method to initialize or change client's age
+	 * 
+	 * @param clientAge client's age
+	 */
+	public void setAge(int clientAge) {
+		age = clientAge;
+	}
+
+	/**
+	 * Method to initialize or change client's age
+	 * 
+	 * @param uName client's username
+	 */
+	public void setUsername(String uName) {
+		username = uName;
+	}
+
+	/**
+	 * Method to initialize or change client's name
+	 * 
+	 * @param firstN client's first name
+	 * @param lastN  client's last name
+	 */
+	public void setName(String firstN, String lastN) {
+		firstName = firstN;
+		lastName = lastN;
+	}
+
+	/**
+	 * Method to initialize or change client's contact number
+	 * 
+	 * @param number client's contact number
+	 */
+	public void setContact(String number) {
+		contactNum = number;
+	}
+
+	/**
+	 * Method to initialize or change client's email
+	 * 
+	 * @param emailAdd client's email address
+	 */
+	public void setEmail(String emailAdd) {
+		email = emailAdd;
+	}
+
 	/**
 	 * Method to establish connection with SQLite database
 	 * 
@@ -57,11 +121,35 @@ public class Client {
 	}
 
 	/**
+	 * Method to delete a client from the existing clients database
+	 * 
+	 * @param clientID unique ID of the client
+	 */
+	public void delete(int clientID) {
+
+		String sql = "DELETE FROM clients WHERE id = ?";
+
+		try (Connection conn = this.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+			// Set the corresponding param
+			pstmt.setInt(1, clientID);
+
+			// Execute the delete statement
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+
+	}
+
+	/**
 	 * Method to display existing clients currently in clients database
 	 */
 	public void display() {
 
 		try {
+
 			Connection connection = connect();
 			String sql = "SELECT * FROM clients";
 
@@ -94,8 +182,6 @@ public class Client {
 	public static void main(String[] args) {
 
 		Client client = new Client();
-		client.insert(2, "nanny23", "Nanny", "Mcphee", "8578692812", "nannymcphee@bu.edu", 42);
-		client.display();
 
 	}
 
