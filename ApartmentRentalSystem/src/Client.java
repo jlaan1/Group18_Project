@@ -79,7 +79,7 @@ public class Client {
 	private Connection connect() {
 		// SQLite connection string
 		String url = "jdbc:sqlite://Users/ljialei/Documents/Boston University/Junior/Spring 2022/"
-				+ "CAS CS411/Group18_Project/ApartmentRentalSystem/clientData.db";
+				+ "CAS CS411/Group18_Project/ApartmentRentalSystem/Data.db";
 		Connection conn = null;
 		try {
 			conn = DriverManager.getConnection(url);
@@ -176,12 +176,6 @@ public class Client {
 			System.out.println("Error connecting to SQLite database");
 			e.printStackTrace();
 		}
-
-	}
-
-	public static void main(String[] args) {
-
-		Client client = new Client();
 
 	}
 
