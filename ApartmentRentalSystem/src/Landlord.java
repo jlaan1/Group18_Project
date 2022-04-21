@@ -5,6 +5,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Class that represents a landlord with the relevant attributes
+ * 
+ * @author Jialei
+ */
+
 public class Landlord {
 
 	private int landlordID;

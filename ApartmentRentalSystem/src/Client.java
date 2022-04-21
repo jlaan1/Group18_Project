@@ -5,6 +5,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Class that represents a client with the relevant attributes
+ * 
+ * @author ljialei
+ */
+
 public class Client {
 
 	private int clientID;
