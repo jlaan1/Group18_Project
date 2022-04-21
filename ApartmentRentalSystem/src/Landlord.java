@@ -1,9 +1,3 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 /**
  * Class that represents a landlord with the relevant attributes
@@ -22,12 +16,46 @@ public class Landlord {
 	private String email;
 
 	/**
+	 * Constructor for a landlord object
+	 * 
+	 * @param landlordID unique landlord ID
+	 * @param username   unique client username
+	 * @param firstName  first name
+	 * @param lastName   last name
+	 * @param contactNum contact number
+	 * @param email      email address
+	 * @param age        client's age
+	 */
+	public Landlord(int landlordID, String username, String firstName, String lastName, String contactNum, String email,
+			int age) {
+
+		setID(landlordID);
+		setAge(age);
+		setUsername(username);
+		setName(firstName, lastName);
+		setContact(contactNum);
+		setEmail(email);
+
+		// Add landlord to SQLite database
+		LandlordDatabase.insert(landlordID, username, firstName, lastName, contactNum, email, age);
+	}
+
+	/**
 	 * Method to initialize or change landlord ID
 	 * 
 	 * @param id unique landlord ID
 	 */
 	public void setID(int id) {
 		landlordID = id;
+	}
+
+	/**
+	 * Method to obtain landlord's ID
+	 * 
+	 * @return landlord's ID
+	 */
+	public int getID() {
+		return landlordID;
 	}
 
 	/**
@@ -40,12 +68,30 @@ public class Landlord {
 	}
 
 	/**
+	 * Method to obtain landlord's age
+	 * 
+	 * @return landlord's age
+	 */
+	public int getAge() {
+		return age;
+	}
+
+	/**
 	 * Method to initialize or change landlord's age
 	 * 
 	 * @param uName landlord's username
 	 */
 	public void setUsername(String uName) {
 		username = uName;
+	}
+
+	/**
+	 * Method to obtain landlord's username
+	 * 
+	 * @return landlord's username
+	 */
+	public String getUsername() {
+		return username;
 	}
 
 	/**
@@ -60,12 +106,30 @@ public class Landlord {
 	}
 
 	/**
+	 * Method to return name of landlord
+	 * 
+	 * @return landlord's full name
+	 */
+	public String getName() {
+		return firstName + lastName;
+	}
+
+	/**
 	 * Method to initialize or change landlord's contact number
 	 * 
 	 * @param number landlord's contact number
 	 */
 	public void setContact(String number) {
 		contactNum = number;
+	}
+
+	/**
+	 * Method to obtain landlord's contact number
+	 * 
+	 * @return landlord's contact number
+	 */
+	public String getContact() {
+		return contactNum;
 	}
 
 	/**
@@ -78,110 +142,12 @@ public class Landlord {
 	}
 
 	/**
-	 * Method to establish connection with SQLite database
+	 * Method to obtain landlord's email
 	 * 
-	 * @return Connection conn with SQLite database
+	 * @return landlord's email address
 	 */
-	private Connection connect() {
-		// SQLite connection string
-		String url = "jdbc:sqlite://Users/ljialei/Documents/Boston University/Junior/Spring 2022/"
-				+ "CAS CS411/Group18_Project/ApartmentRentalSystem/Data.db";
-		Connection conn = null;
-		try {
-			conn = DriverManager.getConnection(url);
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
-		return conn;
+	public String getEmail() {
+		return email;
 	}
 
-	/**
-	 * Method to insert new landlord into landlords database
-	 * 
-	 * @param landlordID unique ID of the landlord
-	 * @param username   unique username of the landlord
-	 * @param fName      first name
-	 * @param lName      last name
-	 * @param contactNum contact number
-	 * @param email      email address
-	 * @param age        landlord age
-	 */
-	public void insert(int landlordID, String username, String fName, String lName, String contactNum, String email,
-			int age) {
-
-		String sql = "INSERT INTO landlords(id, username, firstName, lastName, contactNumber, email, age) VALUES(?,?,?,?,?,?,?)";
-
-		try (Connection conn = this.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-			pstmt.setInt(1, landlordID);
-			pstmt.setString(2, username);
-			pstmt.setString(3, fName);
-			pstmt.setString(4, lName);
-			pstmt.setString(5, contactNum);
-			pstmt.setString(6, email);
-			pstmt.setInt(7, age);
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
-
-	}
-
-	/**
-	 * Method to delete a landlord from the existing landlords database
-	 * 
-	 * @param landlordID unique ID of the landlord
-	 */
-	public void delete(int landlordID) {
-
-		String sql = "DELETE FROM landlords WHERE id = ?";
-
-		try (Connection conn = this.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-			// Set the corresponding param
-			pstmt.setInt(1, landlordID);
-
-			// Execute the delete statement
-			pstmt.executeUpdate();
-
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
-
-	}
-
-	/**
-	 * Method to display existing landlords currently in landlords database
-	 */
-	public void display() {
-
-		try {
-
-			Connection connection = connect();
-			String sql = "SELECT * FROM landlords";
-
-			Statement statement = connection.createStatement();
-			ResultSet result = statement.executeQuery(sql);
-
-			while (result.next()) {
-
-				int landlordID = result.getInt("id");
-				String username = result.getString("username");
-				String fName = result.getString("firstName");
-				String lName = result.getString("lastName");
-				String contactNum = result.getString("contactNumber");
-				String email = result.getString("email");
-				int age = result.getInt("age");
-
-				System.out.println(landlordID + "|" + username + "|" + fName + "|" + lName + "|" + contactNum + "|"
-						+ email + "|" + age);
-
-			}
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			System.out.println("Error connecting to SQLite database");
-			e.printStackTrace();
-		}
-
-	}
 }
