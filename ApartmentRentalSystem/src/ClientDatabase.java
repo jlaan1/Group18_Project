@@ -40,7 +40,7 @@ public class ClientDatabase {
 	public static void insert(int clientID, String username, String fName, String lName, String contactNum,
 			String email, int age) {
 
-		String sql = "INSERT INTO clients(id, username, firstName, lastName, contactNumber, email, age) VALUES(?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO clients VALUES(?,?,?,?,?,?,?)";
 
 		try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setInt(1, clientID);
@@ -64,7 +64,7 @@ public class ClientDatabase {
 	 */
 	public static void delete(int clientID) {
 
-		String sql = "DELETE FROM clients WHERE id = ?";
+		String sql = "DELETE FROM clients WHERE cID = ?";
 
 		try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -95,13 +95,13 @@ public class ClientDatabase {
 
 			while (result.next()) {
 
-				int clientID = result.getInt("id");
-				String username = result.getString("username");
-				String fName = result.getString("firstName");
-				String lName = result.getString("lastName");
-				String contactNum = result.getString("contactNumber");
-				String email = result.getString("email");
-				int age = result.getInt("age");
+				int clientID = result.getInt("cID");
+				String username = result.getString("cUSERNAME");
+				String fName = result.getString("cFIRSTNAME");
+				String lName = result.getString("cLASTNAME");
+				String contactNum = result.getString("cCONTACTNUM");
+				String email = result.getString("cEMAIL");
+				int age = result.getInt("cAGE");
 
 				System.out.println(clientID + "|" + username + "|" + fName + "|" + lName + "|" + contactNum + "|"
 						+ email + "|" + age);
@@ -113,6 +113,10 @@ public class ClientDatabase {
 			System.out.println("Error connecting to SQLite database");
 			e.printStackTrace();
 		}
+
+	}
+
+	public static void main(String[] args) {
 
 	}
 

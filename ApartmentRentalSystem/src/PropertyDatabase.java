@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class LandlordDatabase {
+public class PropertyDatabase {
 
 	/**
 	 * Method to establish connection with SQLite database
@@ -26,29 +26,31 @@ public class LandlordDatabase {
 	}
 
 	/**
-	 * Method to insert new landlord into landlords database
+	 * Method to insert new property into property database
 	 * 
-	 * @param landlordID unique ID of the landlord
-	 * @param username   unique username of the landlord
-	 * @param fName      first name
-	 * @param lName      last name
-	 * @param contactNum contact number
-	 * @param email      email address
-	 * @param age        landlord age
+	 * @param address
+	 * @param propertyType
+	 * @param zipCode
+	 * @param numBR
+	 * @param status
+	 * @param monthlyRate
+	 * @param clientID
+	 * @param landlordID
 	 */
-	public static void insert(int landlordID, String username, String fName, String lName, String contactNum,
-			String email, int age) {
+	public static void insert(String address, String propertyType, int zipCode, int numBR, int status, int monthlyRate,
+			int clientID, int landlordID) {
 
-		String sql = "INSERT INTO landlords VALUES(?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO property VALUES(?,?,?,?,?,?,?,?)";
 
 		try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-			pstmt.setInt(1, landlordID);
-			pstmt.setString(2, username);
-			pstmt.setString(3, fName);
-			pstmt.setString(4, lName);
-			pstmt.setString(5, contactNum);
-			pstmt.setString(6, email);
-			pstmt.setInt(7, age);
+			pstmt.setString(1, address);
+			pstmt.setString(2, propertyType);
+			pstmt.setInt(3, zipCode);
+			pstmt.setInt(4, numBR);
+			pstmt.setInt(5, status);
+			pstmt.setInt(6, monthlyRate);
+			pstmt.setInt(7, clientID);
+			pstmt.setInt(8, landlordID);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -61,14 +63,14 @@ public class LandlordDatabase {
 	 * 
 	 * @param landlordID unique ID of the landlord
 	 */
-	public static void delete(int landlordID) {
+	public static void delete(String address) {
 
-		String sql = "DELETE FROM landlords WHERE lID = ?";
+		String sql = "DELETE FROM property WHERE pADDRESS = ?";
 
 		try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
 			// Set the corresponding param
-			pstmt.setInt(1, landlordID);
+			pstmt.setString(1, address);
 
 			// Execute the delete statement
 			pstmt.executeUpdate();
@@ -80,30 +82,31 @@ public class LandlordDatabase {
 	}
 
 	/**
-	 * Method to display existing landlords currently in landlords database
+	 * Method to display existing properties currently in property database
 	 */
 	public static void display() {
 
 		try {
 
 			Connection connection = connect();
-			String sql = "SELECT * FROM landlords";
+			String sql = "SELECT * FROM property";
 
 			Statement statement = connection.createStatement();
 			ResultSet result = statement.executeQuery(sql);
 
 			while (result.next()) {
 
-				int landlordID = result.getInt("lID");
-				String username = result.getString("lUSERNAME");
-				String fName = result.getString("lFIRSTNAME");
-				String lName = result.getString("lLASTNAME");
-				String contactNum = result.getString("lCONTACTNUM");
-				String email = result.getString("lEMAIL");
-				int age = result.getInt("lAGE");
+				String address = result.getString("pADDRESS");
+				String propertyType = result.getString("pPTYPE");
+				int zipCode = result.getInt("pZIPCODE");
+				int numBR = result.getInt("pNUMBR");
+				int status = result.getInt("pSTATUS");
+				int monthlyRate = result.getInt("pMONTHLYRATE");
+				int clientID = result.getInt("pCLIENTID");
+				int landlordID = result.getInt("pLANDLORDID");
 
-				System.out.println(landlordID + "|" + username + "|" + fName + "|" + lName + "|" + contactNum + "|"
-						+ email + "|" + age);
+				System.out.println(address + "|" + propertyType + "|" + zipCode + "|" + numBR + "|" + status + "|"
+						+ monthlyRate + "|" + clientID + "|" + landlordID);
 
 			}
 
@@ -112,10 +115,6 @@ public class LandlordDatabase {
 			System.out.println("Error connecting to SQLite database");
 			e.printStackTrace();
 		}
-
-	}
-
-	public static void main(String[] args) {
 
 	}
 
