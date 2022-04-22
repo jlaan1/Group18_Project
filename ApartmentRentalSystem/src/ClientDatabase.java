@@ -14,6 +14,7 @@ public class ClientDatabase {
 	 */
 	private static Connection connect() {
 		// SQLite connection string
+		// absolute path
 		String url = "jdbc:sqlite://Users/ljialei/Documents/Boston University/Junior/Spring 2022/"
 				+ "CAS CS411/Group18_Project/ApartmentRentalSystem/Data.db";
 		Connection conn = null;
