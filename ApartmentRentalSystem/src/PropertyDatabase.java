@@ -81,6 +81,39 @@ public class PropertyDatabase {
 
 	}
 
+	public static void makeReservation(int clientID, String address) {
+
+		try {
+
+			Connection connection = connect();
+			String sql = "UPDATE property SET pCLIENTID = ? where pADDRESS = ?";
+
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setInt(1, clientID);
+			statement.setString(2, address);
+			statement.executeUpdate();
+
+			String sql2 = "UPDATE property SET pSTATUS = ? where pADDRESS = ?";
+
+			statement = connection.prepareStatement(sql2);
+			statement.setInt(1, 1);
+			statement.setString(2, address);
+			statement.executeUpdate();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Error connecting to SQLite database");
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * Method to enable search process for clients to find available apartments
+	 * 
+	 * @param lowerB lower bound of budget
+	 * @param upperB upper bound of budget
+	 */
 	public static void queryMatch(int lowerB, int upperB) {
 
 		boolean isEmpty = true;

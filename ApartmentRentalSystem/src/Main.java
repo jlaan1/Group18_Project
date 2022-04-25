@@ -308,8 +308,6 @@ public class Main {
 			inputType = scan.nextLine().toLowerCase();
 		}
 
-		System.out.println();
-
 		if (inputType.contentEquals("e")) {
 			exitMessage();
 			System.exit(0);
@@ -364,12 +362,12 @@ public class Main {
 	 */
 	public static int clientMenu(Scanner scan) {
 
-		int MAX_MENU = 6;
+		int MAX_MENU = 7;
 		int MIN_MENU = 1;
 
 		System.out.println("MENU OPTIONS \n" + "1. Update price range \n" + "2. Update desired number of bedrooms \n"
-				+ "3. Search for available housing \n" + "4. Update personal information \n" + "5. Rent an apartment \n"
-				+ "6. Exit application");
+				+ "3. Search for available housing \n" + "4. Rent an apartment \n" + "5. Update contact number \n"
+				+ "6. Update email address \n" + "7. Exit application");
 
 		System.out.println();
 
@@ -492,6 +490,13 @@ public class Main {
 
 	}
 
+	/**
+	 * Method enabling clients to search for matching and available properties for
+	 * rent
+	 * 
+	 * @param scan     Scanner to read user input
+	 * @param clientID unique client ID
+	 */
 	public static void processSearch(Scanner scan, int clientID) {
 
 		int[] bounds = ClientDatabase.queryBounds(clientID);
@@ -502,6 +507,24 @@ public class Main {
 		System.out.println("Returning to main menu");
 
 		System.out.println();
+	}
+
+	public static void processReservation(Scanner scan, int clientID) {
+
+		String enterAddress = "Please enter the address of your desired property: ";
+		System.out.println(enterAddress);
+		String inputAddress = scan.nextLine();
+		PropertyDatabase.makeReservation(clientID, inputAddress);
+
+		System.out.println(
+				"You have successfully made a reservation at " + inputAddress + "! The landlord will be notified.");
+
+		System.out.println();
+
+		System.out.println("Returning to main menu");
+
+		System.out.println();
+
 	}
 
 	/**
@@ -541,7 +564,10 @@ public class Main {
 				case 3:
 					processSearch(scan, iD);
 					break;
-				case 5:
+				case 4:
+					processReservation(scan, iD);
+					break;
+				case 6:
 					exitMessage();
 					System.exit(0);
 				default:
