@@ -111,6 +111,46 @@ public class ClientDatabase {
 		}
 
 		return password;
+
+	}
+
+	public static int[] queryBounds(int clientID) {
+
+		int lower = 0;
+		int upper = 0;
+
+		try {
+
+			Connection connection = connect();
+			String sql = "SELECT cLBOUND FROM clients WHERE cID = ?";
+
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setInt(1, clientID);
+			ResultSet result = statement.executeQuery();
+
+			while (result.next()) {
+				lower = result.getInt("cLBOUND");
+			}
+
+			String sql2 = "SELECT cUBOUND FROM clients WHERE cID = ?";
+
+			statement = connection.prepareStatement(sql2);
+			statement.setInt(1, clientID);
+			result = statement.executeQuery();
+
+			while (result.next()) {
+				upper = result.getInt("cUBOUND");
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Error connecting to SQLite database");
+			e.printStackTrace();
+		}
+
+		int[] bounds = { lower, upper };
+		return bounds;
+
 	}
 
 	public static void updateBounds(int clientID, int lower, int upper) {

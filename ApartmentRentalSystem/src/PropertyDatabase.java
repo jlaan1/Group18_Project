@@ -81,6 +81,59 @@ public class PropertyDatabase {
 
 	}
 
+	public static void queryMatch(int lowerB, int upperB) {
+
+		boolean isEmpty = true;
+
+		try {
+
+			boolean dummy = true;
+
+			Connection connection = connect();
+			String sql = "SELECT pMONTHLYRATE, pSTATUS, lFIRSTNAME, lLASTNAME, lCONTACTNUM, pADDRESS FROM property, landlords WHERE pLANDLORDID = lID";
+
+			Statement statement = connection.createStatement();
+			ResultSet result = statement.executeQuery(sql);
+
+			while (result.next()) {
+
+				String landlordContact = result.getString("lCONTACTNUM");
+				String landlordFirst = result.getString("lFIRSTNAME");
+				String landlordLast = result.getString("lLASTNAME");
+				int monthlyRate = result.getInt("pMONTHLYRATE");
+				int status = result.getInt("pSTATUS");
+				String address = result.getString("pADDRESS");
+
+				if ((monthlyRate >= lowerB && monthlyRate <= upperB) && status == 0) {
+
+					if (dummy) {
+						System.out.println("Your search yielded the following matching properties:");
+						System.out.println("PROPERTY ADDRESS  |  LANDLORD'S NAME  |  RATE  |  LANDLORD'S CONTACT");
+						dummy = false;
+					}
+
+					System.out.println(address + " | " + landlordFirst + " " + landlordLast + " | $" + monthlyRate
+							+ " | " + landlordContact);
+
+					isEmpty = false;
+
+				}
+
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Error connecting to SQLite database");
+			e.printStackTrace();
+		}
+
+		if (isEmpty) {
+			System.out.println("Your search yielded no results. Please update budget and try again.");
+			System.out.println();
+		}
+
+	}
+
 	/**
 	 * Method to display existing properties currently in property database
 	 */

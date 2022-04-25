@@ -316,7 +316,7 @@ public class Main {
 		}
 
 		String enterID = "Please enter your ID number: ";
-		System.out.print(enterID);
+		System.out.println();
 		int inputID = -1;
 		do {
 			try {
@@ -324,6 +324,7 @@ public class Main {
 				inputID = scan.nextInt();
 			} catch (InputMismatchException e) {
 				invalidInputError();
+				System.out.println();
 			}
 			scan.nextLine();
 		} while (inputID == -1);
@@ -363,8 +364,12 @@ public class Main {
 	 */
 	public static int clientMenu(Scanner scan) {
 
+		int MAX_MENU = 6;
+		int MIN_MENU = 1;
+
 		System.out.println("MENU OPTIONS \n" + "1. Update price range \n" + "2. Update desired number of bedrooms \n"
-				+ "3. Search for available housing \n" + "4. Update personal information \n" + "5. Exit application");
+				+ "3. Search for available housing \n" + "4. Update personal information \n" + "5. Rent an apartment \n"
+				+ "6. Exit application");
 
 		System.out.println();
 
@@ -375,7 +380,7 @@ public class Main {
 				System.out.print(choice);
 				inputChoice = scan.nextInt();
 				System.out.println();
-				if (inputChoice < 1 || inputChoice > 5) {
+				if (inputChoice < MIN_MENU || inputChoice > MAX_MENU) {
 					System.out.println("Please enter a valid option.");
 					System.out.println();
 				}
@@ -384,7 +389,7 @@ public class Main {
 				System.out.println();
 			}
 			scan.nextLine();
-		} while (inputChoice < 1 || inputChoice > 5);
+		} while (inputChoice < MIN_MENU || inputChoice > MAX_MENU);
 
 		return inputChoice;
 
@@ -487,6 +492,18 @@ public class Main {
 
 	}
 
+	public static void processSearch(Scanner scan, int clientID) {
+
+		int[] bounds = ClientDatabase.queryBounds(clientID);
+		PropertyDatabase.queryMatch(bounds[0], bounds[1]);
+
+		System.out.println();
+
+		System.out.println("Returning to main menu");
+
+		System.out.println();
+	}
+
 	/**
 	 * Method to print list of menu options for landlords
 	 */
@@ -520,6 +537,9 @@ public class Main {
 					break;
 				case 2:
 					processNumBR(scan, iD);
+					break;
+				case 3:
+					processSearch(scan, iD);
 					break;
 				case 5:
 					exitMessage();
