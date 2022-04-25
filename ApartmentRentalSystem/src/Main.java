@@ -21,7 +21,7 @@ public class Main {
 	 * Method to print successful exit of application
 	 */
 	public static void exitMessage() {
-		System.out.println("You have exited the application.");
+		System.out.println("You have exited the application. Thank you for using ApartmentRentals.");
 	}
 
 	/**
@@ -509,6 +509,12 @@ public class Main {
 		System.out.println();
 	}
 
+	/**
+	 * Method enabling clients to reserve a property
+	 * 
+	 * @param scan     Scanner to read user input
+	 * @param clientID unique client ID
+	 */
 	public static void processReservation(Scanner scan, int clientID) {
 
 		String enterAddress = "Please enter the address of your desired property: ";
@@ -528,11 +534,247 @@ public class Main {
 	}
 
 	/**
+	 * Method enabling clients to update contact number
+	 * 
+	 * @param scan     Scanner to read user input
+	 * @param clientID unique client ID
+	 */
+	public static void processUpdateContact(Scanner scan, int clientID) {
+
+		long number = -1;
+		String updateContact = "Enter your updated contact number: ";
+		do {
+			try {
+				System.out.print(updateContact);
+				number = scan.nextLong();
+			} catch (InputMismatchException e) {
+				invalidInputError();
+			}
+			scan.nextLine();
+		} while (number == -1);
+
+		String contactNum = Long.toString(number);
+		ClientDatabase.updateContact(clientID, contactNum);
+
+		System.out.println();
+
+		System.out.println("You have successfully updated your contact number to: " + contactNum);
+
+		System.out.println();
+
+		System.out.println("Returning to main menu");
+
+		System.out.println();
+
+	}
+
+	/**
+	 * Method to enable clients to update email
+	 * 
+	 * @param scan     Scanner to read user input
+	 * @param clientID unique client ID
+	 */
+	public static void processUpdateEmail(Scanner scan, int clientID) {
+
+		String updateEmail = "Enter your email (NO spaces allowed): ";
+		System.out.print(updateEmail);
+		String email = scan.next().toLowerCase();
+		scan.nextLine();
+		System.out.println("Your registered email is: " + email);
+
+		ClientDatabase.updateEmail(clientID, email);
+
+		System.out.println();
+
+		System.out.println("You have successfully updated your email address to: " + email);
+
+		System.out.println();
+
+		System.out.println("Returning to main menu");
+
+		System.out.println();
+
+	}
+
+	/**
 	 * Method to print list of menu options for landlords
 	 */
-	public static void printLandlordMenu() {
-		System.out.println("MENU OPTIONS \n" + "1. Add a property \n" + "2. View owned properties \n"
-				+ "3. Update a property listing \n" + "4. Update personal information \n");
+	public static int landlordMenu(Scanner scan) {
+
+		int MIN_MENU = 1;
+		int MAX_MENU = 4;
+
+		System.out.println(
+				"MENU OPTIONS \n" + "1. Add a property \n" + "2. Remove a property" + "3. View owned properties \n"
+						+ "4. Update a property listing \n" + "5. Update personal information \n");
+
+		System.out.println();
+
+		String choice = "Please enter your choice: ";
+		int inputChoice = -1;
+		do {
+			try {
+				System.out.print(choice);
+				inputChoice = scan.nextInt();
+				System.out.println();
+				if (inputChoice < MIN_MENU || inputChoice > MAX_MENU) {
+					System.out.println("Please enter a valid option.");
+					System.out.println();
+				}
+			} catch (InputMismatchException e) {
+				invalidInputError();
+				System.out.println();
+			}
+			scan.nextLine();
+		} while (inputChoice < MIN_MENU || inputChoice > MAX_MENU);
+
+		return inputChoice;
+
+	}
+
+	/**
+	 * Method to obtain address of the new property
+	 * 
+	 * @param scan Scanner to read user input
+	 * @return address of the property
+	 */
+	public static String createAddress(Scanner scan) {
+
+		String createAddress = "Enter the address of your property: ";
+		System.out.print(createAddress);
+		String inputAddress = scan.nextLine();
+		System.out.println("The registered address of your property is: " + inputAddress);
+
+		System.out.println();
+
+		return inputAddress;
+
+	}
+
+	/**
+	 * Method to obtain type of property
+	 * 
+	 * @param scan Scanner to read user input
+	 * @return 'a' if property is an apartment or 'h' if property is a house
+	 */
+	public static String createPropertyType(Scanner scan) {
+
+		String type = "Is this property an APARTMENT or HOUSE? Enter 'a' for APARTMENT or 'h' for HOUSE.";
+
+		System.out.println(type);
+		String inputType = scan.nextLine().toLowerCase();
+		while (!(inputType.contentEquals("a") || inputType.contentEquals("h"))) {
+			invalidInputError();
+			System.out.println(type);
+			inputType = scan.nextLine().toLowerCase();
+		}
+
+		System.out.println();
+
+		return inputType;
+
+	}
+
+	/**
+	 * Method to obtain zip code of property
+	 * 
+	 * @param scan Scanner to read user input
+	 * @return zip code of the property
+	 */
+	public static int createZip(Scanner scan) {
+
+		int zip = -1;
+		String zipCode = "Enter the zip code of your property: ";
+		do {
+			try {
+				System.out.print(zipCode);
+				zip = scan.nextInt();
+			} catch (InputMismatchException e) {
+				invalidInputError();
+			}
+			scan.nextLine();
+		} while (zip == -1);
+		System.out.println("The registered zip code of your address is: " + zip);
+
+		System.out.println();
+
+		return zip;
+
+	}
+
+	/**
+	 * Method to obtain monthly rate of the property
+	 * 
+	 * @param scan Scanner to read user input
+	 * @return monthly rate of the property
+	 */
+	public static int createRate(Scanner scan) {
+
+		int rate = -1;
+		String price = "Enter the expected monthly rate of your property: ";
+		do {
+			try {
+				System.out.print(price);
+				rate = scan.nextInt();
+			} catch (InputMismatchException e) {
+				invalidInputError();
+			}
+			scan.nextLine();
+		} while (rate == -1);
+		System.out.println("The registered zip code of your address is: " + rate);
+
+		System.out.println();
+
+		return rate;
+
+	}
+
+	/**
+	 * Method to obtain number of bedrooms of the property
+	 * 
+	 * @param scan Scanner to read user input
+	 * @return number of bedrooms of the property
+	 */
+	public static int createnumBR(Scanner scan) {
+
+		int numBR = -1;
+		String createBR = "Enter the number of bedrooms in your property (NOTE: Enter 0 for a studio apartment): ";
+		do {
+			try {
+				System.out.print(createBR);
+				numBR = scan.nextInt();
+			} catch (InputMismatchException e) {
+				invalidInputError();
+			}
+			scan.nextLine();
+		} while (numBR == -1);
+		System.out.println("The registered number of bedrooms in your apartment is: " + numBR);
+
+		System.out.println();
+
+		return numBR;
+
+	}
+
+	/**
+	 * Method to allow landlords to add a new property
+	 * 
+	 * @param scan       Scanner to read user input
+	 * @param landlordID unique landlord ID
+	 */
+	public static void processAddProperty(Scanner scan, int landlordID) {
+
+		String address = createAddress(scan);
+		String propertyType = createPropertyType(scan);
+		int zipCode = createZip(scan);
+		int numBR = createnumBR(scan);
+		int monthlyRate = createRate(scan);
+		int status = 0;
+		int cID = 0;
+		int lID = landlordID;
+
+		Property property = new Property(address, propertyType, zipCode, numBR, status, monthlyRate, cID, lID);
+
 	}
 
 	public static void main(String[] args) {
@@ -549,9 +791,10 @@ public class Main {
 			existingUser = existingUser(scan);
 		}
 
+		int choice;
+		int iD = Integer.parseInt(existingUser[1]);
+
 		if (existingUser[0].contentEquals("c")) {
-			int choice;
-			int iD = Integer.parseInt(existingUser[1]);
 			do {
 				choice = clientMenu(scan);
 				switch (choice) {
@@ -567,21 +810,45 @@ public class Main {
 				case 4:
 					processReservation(scan, iD);
 					break;
+				case 5:
+					processUpdateContact(scan, iD);
+					break;
 				case 6:
+					processUpdateEmail(scan, iD);
+					break;
+				case 7:
 					exitMessage();
+					scan.close();
 					System.exit(0);
 				default:
 					// NOTE: Will not get here because clientMenu handles invalid inputs
 					System.out.println("Oops...Something went wrong...");
+					scan.close();
 					System.exit(0);
 				}
-			} while (choice != 8);
+			} while (true);
 
 		} else {
-			printLandlordMenu();
+
+			do {
+				choice = landlordMenu(scan);
+				switch (choice) {
+				case 1:
+					processAddProperty(scan, iD);
+					break;
+				case 7:
+					exitMessage();
+					scan.close();
+					System.exit(0);
+				default:
+					// NOTE: Will not get here because landlordMenu handles invalid inputs
+					System.out.println("Oops...Something went wrong...");
+					scan.close();
+					System.exit(0);
+				}
+			} while (true);
 		}
 
-		scan.close();
 	}
 
 }

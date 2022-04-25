@@ -114,6 +114,12 @@ public class ClientDatabase {
 
 	}
 
+	/**
+	 * Method to query the budget of desired client
+	 * 
+	 * @param clientID unique ID of client
+	 * @return integer array {lower bound, upper bound}
+	 */
 	public static int[] queryBounds(int clientID) {
 
 		int lower = 0;
@@ -153,6 +159,13 @@ public class ClientDatabase {
 
 	}
 
+	/**
+	 * Method to update budget of client in client database
+	 * 
+	 * @param clientID unique client ID
+	 * @param lower    lower bound of budget
+	 * @param upper    upper bound of budget
+	 */
 	public static void updateBounds(int clientID, int lower, int upper) {
 
 		try {
@@ -180,6 +193,12 @@ public class ClientDatabase {
 
 	}
 
+	/**
+	 * Method to update bedroom requirements in client database
+	 * 
+	 * @param clientID unique client ID
+	 * @param numBR    number of bedrooms
+	 */
 	public static void updateBR(int clientID, int numBR) {
 
 		try {
@@ -189,6 +208,52 @@ public class ClientDatabase {
 
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setInt(1, numBR);
+			statement.setInt(2, clientID);
+			statement.executeUpdate();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Error connecting to SQLite database");
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * Method to update contact in client database
+	 * 
+	 * @param clientID unique client ID
+	 * @param contact  contact number
+	 */
+	public static void updateContact(int clientID, String contact) {
+
+		try {
+
+			Connection connection = connect();
+			String sql = "UPDATE clients SET cCONTACTNUM = ? where cID = ?";
+
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, contact);
+			statement.setInt(2, clientID);
+			statement.executeUpdate();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Error connecting to SQLite database");
+			e.printStackTrace();
+		}
+
+	}
+
+	public static void updateEmail(int clientID, String email) {
+
+		try {
+
+			Connection connection = connect();
+			String sql = "UPDATE clients SET cEMAIL = ? where cID = ?";
+
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, email);
 			statement.setInt(2, clientID);
 			statement.executeUpdate();
 

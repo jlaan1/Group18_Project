@@ -15,6 +15,22 @@ public class Property {
 	private int landlordID;
 	private int clientID;
 
+	public Property(String address, String type, int zipCode, int numBR, int status, int rate, int cID, int lID) {
+
+		setAddress(address);
+		setPropertyType(type);
+		setZip(zipCode);
+		setNumBR(numBR);
+		setStatus(status);
+		setRate(rate);
+		setLandlordID(lID);
+		setClientID(cID);
+
+		// Add property to SQLite database
+		PropertyDatabase.insert(address, type, zipCode, numBR, status, rate, cID, lID);
+
+	}
+
 	/**
 	 * Method to set address of property
 	 * 

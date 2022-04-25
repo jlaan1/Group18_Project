@@ -81,6 +81,12 @@ public class PropertyDatabase {
 
 	}
 
+	/**
+	 * Method to allow clients to make a reservation
+	 * 
+	 * @param clientID unique client ID
+	 * @param address  address of the to-be-reserved property
+	 */
 	public static void makeReservation(int clientID, String address) {
 
 		try {
@@ -162,7 +168,6 @@ public class PropertyDatabase {
 
 		if (isEmpty) {
 			System.out.println("Your search yielded no results. Please update budget and try again.");
-			System.out.println();
 		}
 
 	}
