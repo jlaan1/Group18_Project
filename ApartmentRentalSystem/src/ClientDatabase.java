@@ -82,6 +82,38 @@ public class ClientDatabase {
 	}
 
 	/**
+	 * Method to query password of desired client
+	 * 
+	 * @param clientID unique ID of the client
+	 * @return client's account password
+	 */
+	public static String queryPW(int clientID) {
+
+		String password = "";
+
+		try {
+
+			Connection connection = connect();
+			String sql = "SELECT cPASSWORD FROM clients WHERE cID = ?";
+
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setInt(1, clientID);
+			ResultSet result = statement.executeQuery();
+
+			while (result.next()) {
+				password = result.getString("cPASSWORD");
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Error connecting to SQLite database");
+			e.printStackTrace();
+		}
+
+		return password;
+	}
+
+	/**
 	 * Method to display existing clients currently in clients database
 	 */
 	public static void display() {
@@ -118,7 +150,7 @@ public class ClientDatabase {
 	}
 
 	public static void main(String[] args) {
-
+		System.out.println(queryPW(9112));
 	}
 
 }

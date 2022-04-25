@@ -81,6 +81,38 @@ public class LandlordDatabase {
 	}
 
 	/**
+	 * Method to query password of desired landlord
+	 * 
+	 * @param landlordID unique ID of the landlord
+	 * @return landlord's account password
+	 */
+	public static String queryPW(int landlordID) {
+
+		String password = "";
+
+		try {
+
+			Connection connection = connect();
+			String sql = "SELECT cPASSWORD FROM landlords WHERE lID = ?";
+
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setInt(1, landlordID);
+			ResultSet result = statement.executeQuery();
+
+			while (result.next()) {
+				password = result.getString("lPASSWORD");
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Error connecting to SQLite database");
+			e.printStackTrace();
+		}
+
+		return password;
+	}
+
+	/**
 	 * Method to display existing landlords currently in landlords database
 	 */
 	public static void display() {

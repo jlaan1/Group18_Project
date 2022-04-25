@@ -3,8 +3,25 @@ import java.util.Scanner;
 
 public class Main {
 
+	/**
+	 * Method to print error message for invalid inputs
+	 */
 	public static void invalidInputError() {
 		System.out.println("Your input is invalid. Please try again.");
+	}
+
+	/**
+	 * Method to print error message for invalid username or password
+	 */
+	public static void invalidCredentialsError() {
+		System.out.println("Your credentials are invalid. Please try again.");
+	}
+
+	/**
+	 * Method to print successful exit of application
+	 */
+	public static void exitMessage() {
+		System.out.println("You have exited the application.");
 	}
 
 	/**
@@ -73,7 +90,7 @@ public class Main {
 			String createID = "Enter your desired client ID (numbers only): ";
 			do {
 				try {
-					System.out.println(createID);
+					System.out.print(createID);
 					clientID = scan.nextInt();
 				} catch (InputMismatchException e) {
 					System.out.println("WARNING: Enter integer values ONLY. \n");
@@ -84,7 +101,7 @@ public class Main {
 			String createID = "Enter your desired landlord ID (numbers only): ";
 			do {
 				try {
-					System.out.println(createID);
+					System.out.print(createID);
 					landlordID = scan.nextInt();
 				} catch (InputMismatchException e) {
 					System.out.println("WARNING: Enter integer values ONLY. \n");
@@ -112,7 +129,7 @@ public class Main {
 	public static String createUsername(Scanner scan) {
 
 		String createUsername = "Enter your desired username (NO spaces allowed): ";
-		System.out.println(createUsername);
+		System.out.print(createUsername);
 		String username = scan.next().toLowerCase();
 		scan.nextLine();
 		System.out.println("Your username is: " + username);
@@ -132,7 +149,7 @@ public class Main {
 	public static String createPassword(Scanner scan) {
 
 		String createPassword = "Enter your desired password: ";
-		System.out.println(createPassword);
+		System.out.print(createPassword);
 		String password = scan.nextLine();
 
 		System.out.println();
@@ -150,14 +167,14 @@ public class Main {
 	public static String[] createName(Scanner scan) {
 
 		String createFirstName = "Enter your first name: ";
-		System.out.println(createFirstName);
+		System.out.print(createFirstName);
 		String firstName = scan.nextLine();
 		System.out.println("Your registered first name is: " + firstName);
 
 		System.out.println();
 
 		String createLastName = "Enter your last name: ";
-		System.out.println(createLastName);
+		System.out.print(createLastName);
 		String lastName = scan.nextLine();
 		System.out.println("Your registered last name is: " + lastName);
 
@@ -179,7 +196,7 @@ public class Main {
 		String createContact = "Enter your contact number: ";
 		do {
 			try {
-				System.out.println(createContact);
+				System.out.print(createContact);
 				number = scan.nextLong();
 			} catch (InputMismatchException e) {
 				System.out.println("WARNING: Enter integer values ONLY.");
@@ -204,7 +221,7 @@ public class Main {
 	public static String createEmail(Scanner scan) {
 
 		String createEmail = "Enter your email (NO spaces allowed): ";
-		System.out.println(createEmail);
+		System.out.print(createEmail);
 		String email = scan.next().toLowerCase();
 		scan.nextLine();
 		System.out.println("Your registered email is: " + email);
@@ -226,7 +243,7 @@ public class Main {
 		String createAge = "Enter your age: ";
 		do {
 			try {
-				System.out.println(createAge);
+				System.out.print(createAge);
 				age = scan.nextInt();
 			} catch (InputMismatchException e) {
 				System.out.println("WARNING: Enter integer values ONLY.");
@@ -266,6 +283,43 @@ public class Main {
 
 	}
 
+	public static void existingUser(Scanner scan) {
+
+		String enterUsername = "Are you a client or landlord? Enter 'c' for client or 'l' for landlord. Enter 'e' to exit.";
+		System.out.println(enterUsername);
+		String inputType = scan.nextLine().toLowerCase();
+		while (!(inputType.contentEquals("c") || inputType.contentEquals("l") || inputType.contentEquals("e"))) {
+			invalidInputError();
+			System.out.println(enterUsername);
+			inputType = scan.nextLine().toLowerCase();
+		}
+
+		System.out.println();
+
+		if (inputType.contentEquals("e")) {
+			exitMessage();
+			System.exit(0);
+		}
+
+		String enterID = "Please enter your ID number: ";
+		System.out.print(enterID);
+		int inputID = scan.nextInt();
+		scan.nextLine();
+
+		String enterPW = "Please enter your password: ";
+		System.out.print(enterPW);
+		String inputPW = scan.nextLine();
+
+		if (ClientDatabase.queryPW(inputID).contentEquals(inputPW)) {
+			System.out.println("Login Successful");
+		} else {
+			invalidCredentialsError();
+			System.out.println();
+			existingUser(scan);
+		}
+
+	}
+
 	public static void main(String[] args) {
 
 		Scanner scan = new Scanner(System.in);
@@ -274,6 +328,8 @@ public class Main {
 
 		if (input.contentEquals("n")) {
 			registration(scan);
+		} else {
+			existingUser(scan);
 		}
 
 		scan.close();
