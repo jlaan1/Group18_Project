@@ -37,10 +37,10 @@ public class ClientDatabase {
 	 * @param email      email address
 	 * @param age        client age
 	 */
-	public static void insert(int clientID, String username, String fName, String lName, String contactNum,
-			String email, int age) {
+	public static void insert(int clientID, String username, String password, String fName, String lName,
+			String contactNum, String email, int age) {
 
-		String sql = "INSERT INTO clients VALUES(?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO clients VALUES(?,?,?,?,?,?,?,?)";
 
 		try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setInt(1, clientID);
@@ -50,6 +50,7 @@ public class ClientDatabase {
 			pstmt.setString(5, contactNum);
 			pstmt.setString(6, email);
 			pstmt.setInt(7, age);
+			pstmt.setString(8, password);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());

@@ -10,6 +10,7 @@ public class Client {
 	private int clientID;
 	private int age;
 	private String username;
+	private String password;
 	private String firstName;
 	private String lastName;
 	private String contactNum;
@@ -26,18 +27,19 @@ public class Client {
 	 * @param email      email address
 	 * @param age        client's age
 	 */
-	public Client(int clientID, String username, String firstName, String lastName, String contactNum, String email,
-			int age) {
+	public Client(int clientID, String username, String password, String firstName, String lastName, String contactNum,
+			String email, int age) {
 
 		setID(clientID);
 		setAge(age);
 		setUsername(username);
+		setPassword(password);
 		setName(firstName, lastName);
 		setContact(contactNum);
 		setEmail(email);
 
 		// Add client information to SQLite database
-		ClientDatabase.insert(clientID, username, firstName, lastName, contactNum, email, age);
+		ClientDatabase.insert(clientID, username, password, firstName, lastName, contactNum, email, age);
 
 	}
 
@@ -93,6 +95,15 @@ public class Client {
 	 */
 	public String getUsername() {
 		return username;
+	}
+
+	/**
+	 * Method to set client's password
+	 * 
+	 * @param pw client's password
+	 */
+	public void setPassword(String pw) {
+		password = pw;
 	}
 
 	/**

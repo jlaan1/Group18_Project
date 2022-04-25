@@ -36,10 +36,10 @@ public class LandlordDatabase {
 	 * @param email      email address
 	 * @param age        landlord age
 	 */
-	public static void insert(int landlordID, String username, String fName, String lName, String contactNum,
-			String email, int age) {
+	public static void insert(int landlordID, String username, String password, String fName, String lName,
+			String contactNum, String email, int age) {
 
-		String sql = "INSERT INTO landlords VALUES(?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO landlords VALUES(?,?,?,?,?,?,?,?)";
 
 		try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setInt(1, landlordID);
@@ -49,6 +49,7 @@ public class LandlordDatabase {
 			pstmt.setString(5, contactNum);
 			pstmt.setString(6, email);
 			pstmt.setInt(7, age);
+			pstmt.setString(8, password);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());

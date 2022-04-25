@@ -10,6 +10,7 @@ public class Landlord {
 	private int landlordID;
 	private int age;
 	private String username;
+	private String password;
 	private String firstName;
 	private String lastName;
 	private String contactNum;
@@ -26,18 +27,19 @@ public class Landlord {
 	 * @param email      email address
 	 * @param age        client's age
 	 */
-	public Landlord(int landlordID, String username, String firstName, String lastName, String contactNum, String email,
-			int age) {
+	public Landlord(int landlordID, String username, String password, String firstName, String lastName,
+			String contactNum, String email, int age) {
 
 		setID(landlordID);
 		setAge(age);
 		setUsername(username);
+		setPassword(password);
 		setName(firstName, lastName);
 		setContact(contactNum);
 		setEmail(email);
 
 		// Add landlord to SQLite database
-		LandlordDatabase.insert(landlordID, username, firstName, lastName, contactNum, email, age);
+		LandlordDatabase.insert(landlordID, username, password, firstName, lastName, contactNum, email, age);
 	}
 
 	/**
@@ -92,6 +94,15 @@ public class Landlord {
 	 */
 	public String getUsername() {
 		return username;
+	}
+
+	/**
+	 * Method to set landlord's password
+	 * 
+	 * @param pw landlord's password
+	 */
+	public void setPassword(String pw) {
+		password = pw;
 	}
 
 	/**

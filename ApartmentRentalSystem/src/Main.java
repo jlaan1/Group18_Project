@@ -25,6 +25,8 @@ public class Main {
 			input = scan.nextLine().toLowerCase();
 		}
 
+		System.out.println();
+
 		return input;
 	}
 
@@ -132,7 +134,6 @@ public class Main {
 		String createPassword = "Enter your desired password: ";
 		System.out.println(createPassword);
 		String password = scan.nextLine();
-		scan.nextLine();
 
 		System.out.println();
 
@@ -256,6 +257,12 @@ public class Main {
 		String contactNum = createNumber(scan);
 		String email = createEmail(scan);
 		int age = createAge(scan);
+
+		if (accountType.contentEquals("c")) {
+			Client newClient = new Client(idNum, username, password, firstName, lastName, contactNum, email, age);
+		} else {
+			Landlord newLandlord = new Landlord(idNum, username, password, firstName, lastName, contactNum, email, age);
+		}
 
 	}
 
