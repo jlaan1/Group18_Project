@@ -140,6 +140,26 @@ public class ClientDatabase {
 
 	}
 
+	public static void updateBR(int clientID, int numBR) {
+
+		try {
+
+			Connection connection = connect();
+			String sql = "UPDATE clients SET cNUMBEDRM = ? where cID = ?";
+
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setInt(1, numBR);
+			statement.setInt(2, clientID);
+			statement.executeUpdate();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Error connecting to SQLite database");
+			e.printStackTrace();
+		}
+
+	}
+
 	/**
 	 * Method to display existing clients currently in clients database
 	 */
@@ -177,7 +197,7 @@ public class ClientDatabase {
 	}
 
 	public static void main(String[] args) {
-		updateBounds(9188, 4000, 5500);
+
 	}
 
 }

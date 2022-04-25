@@ -364,8 +364,9 @@ public class Main {
 	public static int clientMenu(Scanner scan) {
 
 		System.out.println("MENU OPTIONS \n" + "1. Update price range \n" + "2. Update desired number of bedrooms \n"
-				+ "3. Update type of housing desired \n" + "4. Search for available housing \n"
-				+ "5. Update personal information \n");
+				+ "3. Search for available housing \n" + "4. Update personal information \n" + "5. Exit application");
+
+		System.out.println();
 
 		String choice = "Please enter your choice: ";
 		int inputChoice = -1;
@@ -374,21 +375,28 @@ public class Main {
 				System.out.print(choice);
 				inputChoice = scan.nextInt();
 				System.out.println();
-				if ((inputChoice < 1 || inputChoice > 5) && inputChoice != 6) {
+				if (inputChoice < 1 || inputChoice > 5) {
 					System.out.println("Please enter a valid option.");
 					System.out.println();
 				}
 			} catch (InputMismatchException e) {
 				invalidInputError();
+				System.out.println();
 			}
 			scan.nextLine();
-		} while ((inputChoice < 1 || inputChoice > 5) && inputChoice != 6);
+		} while (inputChoice < 1 || inputChoice > 5);
 
 		return inputChoice;
 
 	}
 
-	public static void processOp1(Scanner scan, int clientID) {
+	/**
+	 * Method to update budget of client
+	 * 
+	 * @param scan     Scanner to read user input
+	 * @param clientID unique client ID
+	 */
+	public static void processBudget(Scanner scan, int clientID) {
 
 		String lowerb = "Please enter the lower bound of your budget: ";
 		int inputLower = -1;
@@ -443,6 +451,43 @@ public class Main {
 	}
 
 	/**
+	 * Method to update desired number of bedrooms for clients
+	 * 
+	 * @param scan     Scanner to read user input
+	 * @param clientID unique client ID
+	 */
+	public static void processNumBR(Scanner scan, int clientID) {
+
+		String numbr = "Please enter the required number of bedrooms: ";
+		int inputBR = -1;
+		do {
+			try {
+				System.out.print(numbr);
+				inputBR = scan.nextInt();
+				System.out.println();
+				if (inputBR < 0) {
+					System.out.println("Please enter a positive number.");
+					System.out.println();
+				}
+			} catch (InputMismatchException e) {
+				invalidInputError();
+			}
+			scan.nextLine();
+		} while (inputBR < 0);
+
+		ClientDatabase.updateBR(clientID, inputBR);
+
+		System.out.println("Successfully updated the required number of bedrooms to " + inputBR);
+
+		System.out.println();
+
+		System.out.println("Returning to main menu");
+
+		System.out.println();
+
+	}
+
+	/**
 	 * Method to print list of menu options for landlords
 	 */
 	public static void printLandlordMenu() {
@@ -466,13 +511,17 @@ public class Main {
 
 		if (existingUser[0].contentEquals("c")) {
 			int choice;
+			int iD = Integer.parseInt(existingUser[1]);
 			do {
 				choice = clientMenu(scan);
 				switch (choice) {
 				case 1:
-					processOp1(scan, Integer.parseInt(existingUser[1]));
+					processBudget(scan, iD);
 					break;
-				case 6:
+				case 2:
+					processNumBR(scan, iD);
+					break;
+				case 5:
 					exitMessage();
 					System.exit(0);
 				default:
