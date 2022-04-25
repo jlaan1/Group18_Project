@@ -93,7 +93,7 @@ public class Main {
 					System.out.print(createID);
 					clientID = scan.nextInt();
 				} catch (InputMismatchException e) {
-					System.out.println("WARNING: Enter integer values ONLY. \n");
+					invalidInputError();
 				}
 				scan.nextLine();
 			} while (clientID == -1);
@@ -104,7 +104,7 @@ public class Main {
 					System.out.print(createID);
 					landlordID = scan.nextInt();
 				} catch (InputMismatchException e) {
-					System.out.println("WARNING: Enter integer values ONLY. \n");
+					invalidInputError();
 				}
 				scan.nextLine();
 			} while (landlordID == -1);
@@ -199,7 +199,7 @@ public class Main {
 				System.out.print(createContact);
 				number = scan.nextLong();
 			} catch (InputMismatchException e) {
-				System.out.println("WARNING: Enter integer values ONLY.");
+				invalidInputError();
 			}
 			scan.nextLine();
 		} while (number == -1);
@@ -246,7 +246,7 @@ public class Main {
 				System.out.print(createAge);
 				age = scan.nextInt();
 			} catch (InputMismatchException e) {
-				System.out.println("WARNING: Enter integer values ONLY.");
+				invalidInputError();
 			}
 			scan.nextLine();
 		} while (age == -1);
@@ -281,15 +281,29 @@ public class Main {
 			Landlord newLandlord = new Landlord(idNum, username, password, firstName, lastName, contactNum, email, age);
 		}
 
+		String success = "You have successfully registered for an account. You will now be redirected to the login window.";
+		System.out.println(success);
+
+		System.out.println();
+
 	}
 
-	public static void existingUser(Scanner scan) {
+	/**
+	 * Method to handle existing user login process
+	 * 
+	 * @param scan Scanner to read user input
+	 */
+	public static String[] existingUser(Scanner scan) {
 
 		String enterUsername = "Are you a client or landlord? Enter 'c' for client or 'l' for landlord. Enter 'e' to exit.";
 		System.out.println(enterUsername);
 		String inputType = scan.nextLine().toLowerCase();
 		while (!(inputType.contentEquals("c") || inputType.contentEquals("l") || inputType.contentEquals("e"))) {
+
 			invalidInputError();
+
+			System.out.println();
+
 			System.out.println(enterUsername);
 			inputType = scan.nextLine().toLowerCase();
 		}
@@ -303,14 +317,32 @@ public class Main {
 
 		String enterID = "Please enter your ID number: ";
 		System.out.print(enterID);
-		int inputID = scan.nextInt();
-		scan.nextLine();
+		int inputID = -1;
+		do {
+			try {
+				System.out.print(enterID);
+				inputID = scan.nextInt();
+			} catch (InputMismatchException e) {
+				invalidInputError();
+			}
+			scan.nextLine();
+		} while (inputID == -1);
+
+		System.out.println();
 
 		String enterPW = "Please enter your password: ";
 		System.out.print(enterPW);
 		String inputPW = scan.nextLine();
 
-		if (ClientDatabase.queryPW(inputID).contentEquals(inputPW)) {
+		System.out.println();
+
+		String queryPW;
+		if (inputType.contentEquals("c")) {
+			queryPW = ClientDatabase.queryPW(inputID);
+		} else {
+			queryPW = LandlordDatabase.queryPW(inputID);
+		}
+		if (queryPW.contentEquals(inputPW)) {
 			System.out.println("Login Successful");
 		} else {
 			invalidCredentialsError();
@@ -318,6 +350,104 @@ public class Main {
 			existingUser(scan);
 		}
 
+		System.out.println();
+
+		String[] toRet = { inputType, Integer.toString(inputID) };
+
+		return toRet;
+
+	}
+
+	/**
+	 * Method to print list of menu options for clients
+	 */
+	public static int clientMenu(Scanner scan) {
+
+		System.out.println("MENU OPTIONS \n" + "1. Update price range \n" + "2. Update desired number of bedrooms \n"
+				+ "3. Update type of housing desired \n" + "4. Search for available housing \n"
+				+ "5. Update personal information \n");
+
+		String choice = "Please enter your choice: ";
+		int inputChoice = -1;
+		do {
+			try {
+				System.out.print(choice);
+				inputChoice = scan.nextInt();
+				System.out.println();
+				if ((inputChoice < 1 || inputChoice > 5) && inputChoice != 6) {
+					System.out.println("Please enter a valid option.");
+					System.out.println();
+				}
+			} catch (InputMismatchException e) {
+				invalidInputError();
+			}
+			scan.nextLine();
+		} while ((inputChoice < 1 || inputChoice > 5) && inputChoice != 6);
+
+		return inputChoice;
+
+	}
+
+	public static void processOp1(Scanner scan, int clientID) {
+
+		String lowerb = "Please enter the lower bound of your budget: ";
+		int inputLower = -1;
+		do {
+			try {
+				System.out.print(lowerb);
+				inputLower = scan.nextInt();
+				System.out.println();
+				if (inputLower < 0) {
+					System.out.println("Please enter a positive number.");
+					System.out.println();
+				}
+			} catch (InputMismatchException e) {
+				invalidInputError();
+			}
+			scan.nextLine();
+		} while (inputLower < 0);
+
+		String upperb = "Please enter the upper bound of your budget: ";
+		int inputUpper = -1;
+		do {
+			try {
+				System.out.print(upperb);
+				inputUpper = scan.nextInt();
+				System.out.println();
+				if (inputUpper < 0) {
+					System.out.println("Please enter a positive number.");
+					System.out.println();
+				} else {
+					if (inputUpper < inputLower) {
+						System.out.println("Please enter an upper bound that is greater than the lower bound");
+						System.out.println();
+					}
+				}
+			} catch (InputMismatchException e) {
+				invalidInputError();
+			}
+			scan.nextLine();
+		} while (inputUpper < 0 || (inputUpper < inputLower));
+
+		ClientDatabase.updateBounds(clientID, inputLower, inputUpper);
+
+		System.out.println("Successfully updated the lower bound of your budget to $" + inputLower
+				+ " and the upper bound of your budget to $" + inputUpper);
+
+		System.out.println();
+
+		System.out.println("Returning to main menu");
+
+		System.out.println();
+
+	}
+
+	/**
+	 * Method to print list of menu options for landlords
+	 */
+	public static void printLandlordMenu() {
+		System.out.println("MENU OPTIONS \n" + "1. Add a property \n" + "2. View owned properties \n"
+				+ "3. Update a property listing \n" + "4. Update personal information \n");
 	}
 
 	public static void main(String[] args) {
@@ -325,11 +455,35 @@ public class Main {
 		Scanner scan = new Scanner(System.in);
 
 		String input = checkUser(scan);
+		String[] existingUser;
 
 		if (input.contentEquals("n")) {
 			registration(scan);
+			existingUser = existingUser(scan);
 		} else {
-			existingUser(scan);
+			existingUser = existingUser(scan);
+		}
+
+		if (existingUser[0].contentEquals("c")) {
+			int choice;
+			do {
+				choice = clientMenu(scan);
+				switch (choice) {
+				case 1:
+					processOp1(scan, Integer.parseInt(existingUser[1]));
+					break;
+				case 6:
+					exitMessage();
+					System.exit(0);
+				default:
+					// NOTE: Will not get here because clientMenu handles invalid inputs
+					System.out.println("Oops...Something went wrong...");
+					System.exit(0);
+				}
+			} while (choice != 8);
+
+		} else {
+			printLandlordMenu();
 		}
 
 		scan.close();

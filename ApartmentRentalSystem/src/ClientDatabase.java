@@ -113,6 +113,33 @@ public class ClientDatabase {
 		return password;
 	}
 
+	public static void updateBounds(int clientID, int lower, int upper) {
+
+		try {
+
+			Connection connection = connect();
+			String sql = "UPDATE clients SET cLBOUND = ? where cID = ?";
+
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setInt(1, lower);
+			statement.setInt(2, clientID);
+			statement.executeUpdate();
+
+			String sql2 = "UPDATE clients SET cUBOUND = ? where cID = ?";
+
+			statement = connection.prepareStatement(sql2);
+			statement.setInt(1, upper);
+			statement.setInt(2, clientID);
+			statement.executeUpdate();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Error connecting to SQLite database");
+			e.printStackTrace();
+		}
+
+	}
+
 	/**
 	 * Method to display existing clients currently in clients database
 	 */
@@ -150,7 +177,7 @@ public class ClientDatabase {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(queryPW(9112));
+		updateBounds(9188, 4000, 5500);
 	}
 
 }

@@ -93,7 +93,7 @@ public class LandlordDatabase {
 		try {
 
 			Connection connection = connect();
-			String sql = "SELECT cPASSWORD FROM landlords WHERE lID = ?";
+			String sql = "SELECT lPASSWORD FROM landlords WHERE lID = ?";
 
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setInt(1, landlordID);
