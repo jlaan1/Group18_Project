@@ -605,7 +605,7 @@ public class Main {
 		int MAX_MENU = 4;
 
 		System.out.println(
-				"MENU OPTIONS \n" + "1. Add a property \n" + "2. Remove a property" + "3. View owned properties \n"
+				"MENU OPTIONS \n" + "1. Add a property \n" + "2. Remove a property \n" + "3. View owned properties \n"
 						+ "4. Update a property listing \n" + "5. Update personal information \n");
 
 		System.out.println();
@@ -775,6 +775,87 @@ public class Main {
 
 		Property property = new Property(address, propertyType, zipCode, numBR, status, monthlyRate, cID, lID);
 
+		System.out.println("You have successfully added a new property listing at " + address + ".");
+
+		System.out.println();
+
+		System.out.println("Returning to main menu");
+
+		System.out.println();
+
+	}
+
+	/**
+	 * Method to allow landlords to remove any of their property listings
+	 * 
+	 * @param scan Scanner to read user input
+	 */
+	public static void processRemoveProperty(Scanner scan) {
+
+		String createAddress = "Enter the address of your property: ";
+		System.out.print(createAddress);
+		String inputAddress = scan.nextLine();
+
+		PropertyDatabase.delete(inputAddress);
+
+		System.out.println();
+
+		System.out.println("You have successfully removed " + inputAddress + " from your list of properties.");
+
+		System.out.println();
+
+		System.out.println("Returning to main menu");
+
+		System.out.println();
+
+	}
+
+	/**
+	 * Method to allow landlords to view their current property listings
+	 * 
+	 * @param scan       Scanner to read user input
+	 * @param landlordID unique landlord ID
+	 */
+	public static void processViewProperties(Scanner scan, int landlordID) {
+
+		PropertyDatabase.displayProperties(landlordID);
+
+		System.out.println();
+
+		System.out.println("Returning to main menu");
+
+		System.out.println();
+
+	}
+
+	public static void processUpdatePrice(Scanner scan) {
+
+		String createAddress = "Enter the address of the property you wish to update: ";
+		System.out.print(createAddress);
+		String inputAddress = scan.nextLine();
+
+		int newPrice = -1;
+		String price = "Enter the new monthly rate of the property: ";
+		do {
+			try {
+				System.out.print(price);
+				newPrice = scan.nextInt();
+			} catch (InputMismatchException e) {
+				invalidInputError();
+			}
+			scan.nextLine();
+		} while (newPrice == -1);
+
+		System.out.println();
+
+		System.out.println("You have successfully updated the rate of " + inputAddress + " to be " + newPrice);
+
+		System.out.println();
+
+		System.out.println("Returning to main menu");
+
+		System.out.println();
+
 	}
 
 	public static void main(String[] args) {
@@ -835,6 +916,15 @@ public class Main {
 				switch (choice) {
 				case 1:
 					processAddProperty(scan, iD);
+					break;
+				case 2:
+					processRemoveProperty(scan);
+					break;
+				case 3:
+					processViewProperties(scan, iD);
+					break;
+				case 4:
+					processUpdatePrice(scan);
 					break;
 				case 7:
 					exitMessage();

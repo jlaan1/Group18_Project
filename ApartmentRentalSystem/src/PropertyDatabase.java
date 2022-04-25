@@ -172,6 +172,86 @@ public class PropertyDatabase {
 
 	}
 
+	public static void updatePrice(String address, int rate) {
+
+		try {
+
+			Connection connection = connect();
+			String sql = "UPDATE property SET pMONTHLYRATE = ? where pADDRESS = ?";
+
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setInt(1, rate);
+			statement.setString(2, address);
+			statement.executeUpdate();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Error connecting to SQLite database");
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * Method to display properties belonging to a specific landlord
+	 * 
+	 * @param landlordID unique landlord ID
+	 */
+	public static void displayProperties(int landlordID) {
+
+		boolean isEmpty = true;
+
+		try {
+
+			boolean dummy = true;
+
+			Connection connection = connect();
+			String sql = "SELECT * FROM property where pLANDLORDID = ?";
+
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setInt(1, landlordID);
+
+			// Statement statement = connection.createStatement();
+			ResultSet result = statement.executeQuery();
+
+			while (result.next()) {
+
+				String address = result.getString("pADDRESS");
+				String propertyType = result.getString("pPTYPE");
+				int zipCode = result.getInt("pZIPCODE");
+				int numBR = result.getInt("pNUMBR");
+				int status = result.getInt("pSTATUS");
+				int monthlyRate = result.getInt("pMONTHLYRATE");
+				int cID = result.getInt("pCLIENTID");
+				int lID = result.getInt("pLANDLORDID");
+
+				if (dummy) {
+					System.out.println("You have the following properties listed:");
+					System.out.println();
+					System.out.println(
+							"PROPERTY ADDRESS  |  PROPERTY TYPE  |  ZIP  | BEDRMS | STATUS | RATE | CLIENTID | LANDLORDID");
+					dummy = false;
+				}
+
+				System.out.println(address + "  |  " + propertyType + "  |  " + zipCode + "  |  " + numBR + "  |  "
+						+ status + "  |  " + "$" + monthlyRate + "  |  " + cID + "  |  " + lID);
+
+				isEmpty = false;
+
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Error connecting to SQLite database");
+			e.printStackTrace();
+		}
+
+		if (isEmpty) {
+			System.out.println("Oops...you have no listed properties.");
+		}
+
+	}
+
 	/**
 	 * Method to display existing properties currently in property database
 	 */
