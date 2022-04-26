@@ -1,6 +1,11 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * Class that represents the front-end of the application
+ * 
+ * @author Jialei
+ */
 public class Main {
 
 	/**

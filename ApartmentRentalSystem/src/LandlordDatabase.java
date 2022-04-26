@@ -5,6 +5,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Class that represents the landlords database and will handle any
+ * communications with the SQLite database
+ * 
+ * @author Jialei
+ */
 public class LandlordDatabase {
 
 	/**
