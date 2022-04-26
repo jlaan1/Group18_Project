@@ -539,7 +539,7 @@ public class Main {
 	 * @param scan     Scanner to read user input
 	 * @param clientID unique client ID
 	 */
-	public static void processUpdateContact(Scanner scan, int clientID) {
+	public static void processUpdateContact(Scanner scan, int iD, String type) {
 
 		long number = -1;
 		String updateContact = "Enter your updated contact number: ";
@@ -554,7 +554,12 @@ public class Main {
 		} while (number == -1);
 
 		String contactNum = Long.toString(number);
-		ClientDatabase.updateContact(clientID, contactNum);
+
+		if (type.contentEquals("c")) {
+			ClientDatabase.updateContact(iD, contactNum);
+		} else {
+			LandlordDatabase.updateContact(iD, contactNum);
+		}
 
 		System.out.println();
 
@@ -574,15 +579,19 @@ public class Main {
 	 * @param scan     Scanner to read user input
 	 * @param clientID unique client ID
 	 */
-	public static void processUpdateEmail(Scanner scan, int clientID) {
+	public static void processUpdateEmail(Scanner scan, int iD, String type) {
 
-		String updateEmail = "Enter your email (NO spaces allowed): ";
+		String updateEmail = "Enter your new email (NO spaces allowed): ";
 		System.out.print(updateEmail);
 		String email = scan.next().toLowerCase();
 		scan.nextLine();
-		System.out.println("Your registered email is: " + email);
+		System.out.println("Your registered email is now: " + email);
 
-		ClientDatabase.updateEmail(clientID, email);
+		if (type.contentEquals("c")) {
+			ClientDatabase.updateEmail(iD, email);
+		} else {
+			LandlordDatabase.updateEmail(iD, email);
+		}
 
 		System.out.println();
 
@@ -602,11 +611,11 @@ public class Main {
 	public static int landlordMenu(Scanner scan) {
 
 		int MIN_MENU = 1;
-		int MAX_MENU = 4;
+		int MAX_MENU = 8;
 
-		System.out.println(
-				"MENU OPTIONS \n" + "1. Add a property \n" + "2. Remove a property \n" + "3. View owned properties \n"
-						+ "4. Update a property listing \n" + "5. Update personal information \n");
+		System.out.println("MENU OPTIONS \n" + "1. Add a property \n" + "2. Remove a property \n"
+				+ "3. View owned properties \n" + "4. Update a property listing \n" + "5. Evict a client \n"
+				+ "6. Update contact number \n" + "7. Update email address \n" + "8. Exit application");
 
 		System.out.println();
 
@@ -828,6 +837,11 @@ public class Main {
 
 	}
 
+	/**
+	 * Method to allow landlords to update the monthly rates of their properties
+	 * 
+	 * @param scan Scanner to read user input
+	 */
 	public static void processUpdatePrice(Scanner scan) {
 
 		String createAddress = "Enter the address of the property you wish to update: ";
@@ -849,6 +863,27 @@ public class Main {
 		System.out.println();
 
 		System.out.println("You have successfully updated the rate of " + inputAddress + " to be " + newPrice);
+
+		System.out.println();
+
+		System.out.println("Returning to main menu");
+
+		System.out.println();
+
+	}
+
+	public static void processEvictClient(Scanner scan) {
+
+		String toEvict = "Enter the address of your property: ";
+		System.out.print(toEvict);
+		String inputAddress = scan.nextLine();
+
+		PropertyDatabase.evictClient(inputAddress);
+
+		System.out.println();
+
+		System.out.println(
+				"You have successfully evicted the client from " + inputAddress + ". The property is now available");
 
 		System.out.println();
 
@@ -892,10 +927,10 @@ public class Main {
 					processReservation(scan, iD);
 					break;
 				case 5:
-					processUpdateContact(scan, iD);
+					processUpdateContact(scan, iD, "c");
 					break;
 				case 6:
-					processUpdateEmail(scan, iD);
+					processUpdateEmail(scan, iD, "c");
 					break;
 				case 7:
 					exitMessage();
@@ -926,7 +961,16 @@ public class Main {
 				case 4:
 					processUpdatePrice(scan);
 					break;
+				case 5:
+					processEvictClient(scan);
+					break;
+				case 6:
+					processUpdateContact(scan, iD, "l");
+					break;
 				case 7:
+					processUpdateEmail(scan, iD, "l");
+					break;
+				case 8:
 					exitMessage();
 					scan.close();
 					System.exit(0);

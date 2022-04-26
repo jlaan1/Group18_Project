@@ -245,6 +245,11 @@ public class ClientDatabase {
 
 	}
 
+	/**
+	 * 
+	 * @param clientID
+	 * @param email
+	 */
 	public static void updateEmail(int clientID, String email) {
 
 		try {

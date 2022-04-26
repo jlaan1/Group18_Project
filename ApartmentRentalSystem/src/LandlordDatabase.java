@@ -113,6 +113,58 @@ public class LandlordDatabase {
 	}
 
 	/**
+	 * Method to update contact number of the landlord
+	 * 
+	 * @param landlordID unique landlord ID
+	 * @param contact    contact number
+	 */
+	public static void updateContact(int landlordID, String contact) {
+
+		try {
+
+			Connection connection = connect();
+			String sql = "UPDATE landlords SET lCONTACTNUM = ? where lID = ?";
+
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, contact);
+			statement.setInt(2, landlordID);
+			statement.executeUpdate();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Error connecting to SQLite database");
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * Method to update email address of the landlord
+	 * 
+	 * @param landlordID unique landlord ID
+	 * @param email      email address
+	 */
+	public static void updateEmail(int landlordID, String email) {
+
+		try {
+
+			Connection connection = connect();
+			String sql = "UPDATE landlords SET lEMAIL = ? where lID = ?";
+
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, email);
+			statement.setInt(2, landlordID);
+			statement.executeUpdate();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Error connecting to SQLite database");
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
 	 * Method to display existing landlords currently in landlords database
 	 */
 	public static void display() {
