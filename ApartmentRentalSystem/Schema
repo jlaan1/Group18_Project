@@ -6,9 +6,8 @@ CREATE TABLE Users(
  first_name VARCHAR(255) NOT NULL,
  last_name VARCHAR(255) NOT NULL,
  email VARCHAR(255) NOT NULL UNIQUE,
- birth_date DATE,
- hometown VARCHAR(255),
- gender VARCHAR(100),
+ age INTEGER,
+ contact INTEGER,
  password VARCHAR(255) NOT NULL,
  PRIMARY KEY (user_id)
  );
