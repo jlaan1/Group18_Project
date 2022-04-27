@@ -20,8 +20,7 @@ public class PropertyDatabase {
 	 */
 	private static Connection connect() {
 		// SQLite connection string
-		String url = "jdbc:sqlite://Users/ljialei/Documents/Boston University/Junior/Spring 2022/"
-				+ "CAS CS411/Group18_Project/ApartmentRentalSystem/Data.db";
+		String url = "jdbc:sqlite:Data.db";
 		Connection conn = null;
 		try {
 			conn = DriverManager.getConnection(url);
@@ -328,7 +327,7 @@ public class PropertyDatabase {
 	}
 
 	public static void main(String[] args) {
-
+		display();
 	}
 
 }
