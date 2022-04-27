@@ -46,7 +46,7 @@ public class ClientDatabase {
 	public static void insert(int clientID, String username, String password, String fName, String lName,
 			String contactNum, String email, int age) {
 
-		String sql = "INSERT INTO clients VALUES(?,?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO clients VALUES(?,?,?,?,?,?,?,?,?,?,?)";
 
 		try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 			pstmt.setInt(1, clientID);
@@ -57,6 +57,9 @@ public class ClientDatabase {
 			pstmt.setString(6, email);
 			pstmt.setInt(7, age);
 			pstmt.setString(8, password);
+			pstmt.setInt(9, 0);
+			pstmt.setInt(10, 0);
+			pstmt.setInt(11, -1);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
