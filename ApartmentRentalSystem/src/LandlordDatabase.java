@@ -174,6 +174,8 @@ public class LandlordDatabase {
 	 */
 	public static void display() {
 
+		System.out.println("LANDLORDID | USERNAME | FIRSTNAME | LASTNAME | NUMBER | EMAIL | AGE | PASSWORD");
+
 		try {
 
 			Connection connection = connect();
@@ -191,9 +193,10 @@ public class LandlordDatabase {
 				String contactNum = result.getString("lCONTACTNUM");
 				String email = result.getString("lEMAIL");
 				int age = result.getInt("lAGE");
+				String password = result.getString("lPASSWORD");
 
 				System.out.println(landlordID + "|" + username + "|" + fName + "|" + lName + "|" + contactNum + "|"
-						+ email + "|" + age);
+						+ email + "|" + age + "|" + password);
 
 			}
 

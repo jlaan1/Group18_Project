@@ -282,6 +282,9 @@ public class ClientDatabase {
 	 */
 	public static void display() {
 
+		System.out.println(
+				"CLIENTID | USERNAME | FIRSTNAME | LASTNAME | NUMBER | EMAIL | AGE | PASSWORD | LOWER BUDGET | HIGEHR BUDGET | NUM BEDRM");
+
 		try {
 
 			Connection connection = connect();
@@ -299,9 +302,13 @@ public class ClientDatabase {
 				String contactNum = result.getString("cCONTACTNUM");
 				String email = result.getString("cEMAIL");
 				int age = result.getInt("cAGE");
+				String password = result.getString("cPASSWORD");
+				int lBound = result.getInt("cLBOUND");
+				int uBound = result.getInt("cUBOUND");
+				int numBR = result.getInt("cNUMBEDRM");
 
 				System.out.println(clientID + "|" + username + "|" + fName + "|" + lName + "|" + contactNum + "|"
-						+ email + "|" + age);
+						+ email + "|" + age + "|" + password + "|" + lBound + "|" + uBound + "|" + numBR);
 
 			}
 
@@ -314,7 +321,7 @@ public class ClientDatabase {
 	}
 
 	public static void main(String[] args) {
-
+		display();
 	}
 
 }

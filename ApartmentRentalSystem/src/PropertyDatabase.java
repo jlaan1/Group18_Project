@@ -13,6 +13,8 @@ import java.sql.Statement;
  */
 public class PropertyDatabase {
 
+	static int MAX_STRLEN = 35;
+
 	/**
 	 * Method to establish connection with SQLite database
 	 * 
@@ -265,8 +267,32 @@ public class PropertyDatabase {
 				if (dummy) {
 					System.out.println("You have the following properties listed:");
 					System.out.println();
-					System.out.println(
-							"PROPERTY ADDRESS  |  PROPERTY TYPE  |  ZIP  | BEDRMS | STATUS | RATE | CLIENTID | LANDLORDID");
+
+					String a = "ADDRESS";
+					System.out.print(a);
+					String r = repeat(" ", MAX_STRLEN - a.length());
+					System.out.print(r);
+
+					String t = "TYPE";
+					System.out.print(t + "|");
+
+					String z = "ZIP";
+					System.out.print(z);
+					System.out.print(repeat(" ", 2));
+
+					String br = "BEDRMS";
+					System.out.print(br + "|");
+
+					String s = "STATUS";
+					System.out.print(s + "|");
+
+					String rate = "RATE |";
+					System.out.print(rate);
+
+					String ID = "CLIENTID | LANDLORDID";
+					System.out.print(ID);
+
+					System.out.println();
 					dummy = false;
 				}
 
@@ -289,10 +315,45 @@ public class PropertyDatabase {
 
 	}
 
+	public static String repeat(String s, int n) {
+		String res = "";
+		for (int i = 0; i < n; i++) {
+			res = res.concat(" ");
+		}
+		res = res.concat("|");
+		return res;
+	}
+
 	/**
 	 * Method to display existing properties currently in property database
 	 */
 	public static void display() {
+
+		String a = "ADDRESS";
+		System.out.print(a);
+		String r = repeat(" ", MAX_STRLEN - a.length());
+		System.out.print(r);
+
+		String t = "TYPE";
+		System.out.print(t + "|");
+
+		String z = "ZIP";
+		System.out.print(z);
+		System.out.print(repeat(" ", 2));
+
+		String br = "BEDRMS";
+		System.out.print(br + "|");
+
+		String s = "STATUS";
+		System.out.print(s + "|");
+
+		String rate = "RATE |";
+		System.out.print(rate);
+
+		String ID = "CLIENTID | LANDLORDID";
+		System.out.print(ID);
+
+		System.out.println();
 
 		try {
 
@@ -313,8 +374,17 @@ public class PropertyDatabase {
 				int clientID = result.getInt("pCLIENTID");
 				int landlordID = result.getInt("pLANDLORDID");
 
-				System.out.println(address + "|" + propertyType + "|" + zipCode + "|" + numBR + "|" + status + "|"
-						+ monthlyRate + "|" + clientID + "|" + landlordID);
+				String toRepeat = repeat(" ", MAX_STRLEN - address.length());
+				String toRepeat2 = repeat(" ", 3);
+				String toRepeat3 = repeat(" ", 5);
+
+				if (zipCode < 10000) {
+					System.out.println(address + toRepeat + propertyType + toRepeat2 + 0 + zipCode + "|" + numBR
+							+ toRepeat3 + status + toRepeat3 + "$" + monthlyRate + "|" + clientID + "|" + landlordID);
+				} else {
+					System.out.println(address + toRepeat + propertyType + toRepeat2 + zipCode + "|" + numBR + toRepeat3
+							+ status + toRepeat3 + "$" + monthlyRate + "|" + clientID + "|" + landlordID);
+				}
 
 			}
 

@@ -297,13 +297,15 @@ public class Main {
 	 * Method to handle existing user login process
 	 * 
 	 * @param scan Scanner to read user input
+	 * @return String array { type of user, userID }
 	 */
 	public static String[] existingUser(Scanner scan) {
 
 		String enterUsername = "Are you a client or landlord? Enter 'c' for client or 'l' for landlord. Enter 'e' to exit.";
 		System.out.println(enterUsername);
 		String inputType = scan.nextLine().toLowerCase();
-		while (!(inputType.contentEquals("c") || inputType.contentEquals("l") || inputType.contentEquals("e"))) {
+		while (!(inputType.contentEquals("c") || inputType.contentEquals("l") || inputType.contentEquals("e")
+				|| inputType.contentEquals("admin"))) {
 
 			invalidInputError();
 
@@ -316,6 +318,13 @@ public class Main {
 		if (inputType.contentEquals("e")) {
 			exitMessage();
 			System.exit(0);
+		}
+
+		String admin = "admin";
+		if (inputType.contentEquals(admin)) {
+			String[] ret = { admin, admin };
+			System.out.println();
+			return ret;
 		}
 
 		String enterID = "Please enter your ID number: ";
@@ -898,6 +907,59 @@ public class Main {
 
 	}
 
+	public static int adminMenu(Scanner scan) {
+
+		int MIN_MENU = 1;
+		int MAX_MENU = 4;
+
+		System.out.println("MENU OPTIONS \n" + "1. View client database \n" + "2. View landlord database \n"
+				+ "3. View property database \n" + "4. Exit application");
+
+		System.out.println();
+
+		String choice = "Please enter your choice: ";
+		int inputChoice = -1;
+		do {
+			try {
+				System.out.print(choice);
+				inputChoice = scan.nextInt();
+				System.out.println();
+				if (inputChoice < MIN_MENU || inputChoice > MAX_MENU) {
+					System.out.println("Please enter a valid option.");
+					System.out.println();
+				}
+			} catch (InputMismatchException e) {
+				invalidInputError();
+				System.out.println();
+			}
+			scan.nextLine();
+		} while (inputChoice < MIN_MENU || inputChoice > MAX_MENU);
+
+		return inputChoice;
+
+	}
+
+	/**
+	 * Method to view entire client database
+	 */
+	public static void processViewClientDB() {
+		ClientDatabase.display();
+	}
+
+	/**
+	 * Method to view entire landlord database
+	 */
+	public static void processViewLandlordDB() {
+		LandlordDatabase.display();
+	}
+
+	/**
+	 * Method to view entire property database
+	 */
+	public static void processViewPropertyDB() {
+		PropertyDatabase.display();
+	}
+
 	public static void main(String[] args) {
 
 		Scanner scan = new Scanner(System.in);
@@ -913,9 +975,12 @@ public class Main {
 		}
 
 		int choice;
-		int iD = Integer.parseInt(existingUser[1]);
+		int iD;
 
 		if (existingUser[0].contentEquals("c")) {
+
+			iD = Integer.parseInt(existingUser[1]);
+
 			do {
 				choice = clientMenu(scan);
 				switch (choice) {
@@ -949,7 +1014,9 @@ public class Main {
 				}
 			} while (true);
 
-		} else {
+		} else if (existingUser[0].contentEquals("l")) {
+
+			iD = Integer.parseInt(existingUser[1]);
 
 			do {
 				choice = landlordMenu(scan);
@@ -986,6 +1053,32 @@ public class Main {
 					System.exit(0);
 				}
 			} while (true);
+		} else {
+
+			do {
+				choice = adminMenu(scan);
+				switch (choice) {
+				case 1:
+					processViewClientDB();
+					break;
+				case 2:
+					processViewLandlordDB();
+					break;
+				case 3:
+					processViewPropertyDB();
+					break;
+				case 4:
+					exitMessage();
+					scan.close();
+					System.exit(0);
+				default:
+					// NOTE: Will not get here because landlordMenu handles invalid inputs
+					System.out.println("Oops...Something went wrong...");
+					scan.close();
+					System.exit(0);
+				}
+			} while (true);
+
 		}
 
 	}
