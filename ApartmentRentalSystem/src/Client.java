@@ -39,7 +39,7 @@ public class Client {
 		setEmail(email);
 
 		// Add client information to SQLite database
-		ClientDatabase.insert(clientID, username, password, firstName, lastName, contactNum, email, age);
+		ClientDB_Messenger.insert(clientID, username, password, firstName, lastName, contactNum, email, age);
 
 	}
 

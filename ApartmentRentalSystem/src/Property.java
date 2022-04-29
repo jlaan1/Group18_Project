@@ -27,7 +27,7 @@ public class Property {
 		setClientID(cID);
 
 		// Add property to SQLite database
-		PropertyDatabase.insert(address, type, zipCode, numBR, status, rate, cID, lID);
+		PropertyDB_Messenger.insert(address, type, zipCode, numBR, status, rate, cID, lID);
 
 	}
 

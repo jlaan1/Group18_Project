@@ -11,7 +11,7 @@ import java.sql.Statement;
  * 
  * @author Jialei
  */
-public class PropertyDatabase {
+public class PropertyDB_Messenger {
 
 	static int MAX_STRLEN = 35;
 
@@ -211,6 +211,12 @@ public class PropertyDatabase {
 
 	}
 
+	/**
+	 * Method to allow updating of property price
+	 * 
+	 * @param address address of property
+	 * @param rate    new monthly rate
+	 */
 	public static void updatePrice(String address, int rate) {
 
 		try {
@@ -315,6 +321,13 @@ public class PropertyDatabase {
 
 	}
 
+	/**
+	 * Method to repeat a string s n times
+	 * 
+	 * @param s string
+	 * @param n number of repeats
+	 * @return string s repeated n times
+	 */
 	public static String repeat(String s, int n) {
 		String res = "";
 		for (int i = 0; i < n; i++) {
@@ -394,10 +407,6 @@ public class PropertyDatabase {
 			e.printStackTrace();
 		}
 
-	}
-
-	public static void main(String[] args) {
-		display();
 	}
 
 }

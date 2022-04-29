@@ -351,9 +351,9 @@ public class Main {
 
 		String queryPW;
 		if (inputType.contentEquals("c")) {
-			queryPW = ClientDatabase.queryPW(inputID);
+			queryPW = ClientDB_Messenger.queryPW(inputID);
 		} else {
-			queryPW = LandlordDatabase.queryPW(inputID);
+			queryPW = LandlordDB_Messenger.queryPW(inputID);
 		}
 		if (queryPW.contentEquals(inputPW)) {
 			System.out.println("Login Successful");
@@ -454,7 +454,7 @@ public class Main {
 			scan.nextLine();
 		} while (inputUpper < 0 || (inputUpper < inputLower));
 
-		ClientDatabase.updateBounds(clientID, inputLower, inputUpper);
+		ClientDB_Messenger.updateBounds(clientID, inputLower, inputUpper);
 
 		System.out.println("Successfully updated the lower bound of your budget to $" + inputLower
 				+ " and the upper bound of your budget to $" + inputUpper);
@@ -492,7 +492,7 @@ public class Main {
 			scan.nextLine();
 		} while (inputBR < 0);
 
-		ClientDatabase.updateBR(clientID, inputBR);
+		ClientDB_Messenger.updateBR(clientID, inputBR);
 
 		System.out.println("Successfully updated the required number of bedrooms to " + inputBR);
 
@@ -513,8 +513,8 @@ public class Main {
 	 */
 	public static void processSearch(Scanner scan, int clientID) {
 
-		int[] bounds = ClientDatabase.queryBounds(clientID);
-		PropertyDatabase.queryMatch(bounds[0], bounds[1]);
+		int[] bounds = ClientDB_Messenger.queryBounds(clientID);
+		PropertyDB_Messenger.queryMatch(bounds[0], bounds[1]);
 
 		System.out.println();
 
@@ -534,7 +534,7 @@ public class Main {
 		String enterAddress = "Please enter the address of your desired property: ";
 		System.out.println(enterAddress);
 		String inputAddress = scan.nextLine();
-		PropertyDatabase.makeReservation(clientID, inputAddress);
+		PropertyDB_Messenger.makeReservation(clientID, inputAddress);
 
 		System.out.println(
 				"You have successfully made a reservation at " + inputAddress + "! The landlord will be notified.");
@@ -570,9 +570,9 @@ public class Main {
 		String contactNum = Long.toString(number);
 
 		if (type.contentEquals("c")) {
-			ClientDatabase.updateContact(iD, contactNum);
+			ClientDB_Messenger.updateContact(iD, contactNum);
 		} else {
-			LandlordDatabase.updateContact(iD, contactNum);
+			LandlordDB_Messenger.updateContact(iD, contactNum);
 		}
 
 		System.out.println();
@@ -602,9 +602,9 @@ public class Main {
 		System.out.println("Your registered email is now: " + email);
 
 		if (type.contentEquals("c")) {
-			ClientDatabase.updateEmail(iD, email);
+			ClientDB_Messenger.updateEmail(iD, email);
 		} else {
-			LandlordDatabase.updateEmail(iD, email);
+			LandlordDB_Messenger.updateEmail(iD, email);
 		}
 
 		System.out.println();
@@ -819,7 +819,7 @@ public class Main {
 		System.out.print(createAddress);
 		String inputAddress = scan.nextLine();
 
-		PropertyDatabase.delete(inputAddress);
+		PropertyDB_Messenger.delete(inputAddress);
 
 		System.out.println();
 
@@ -841,7 +841,7 @@ public class Main {
 	 */
 	public static void processViewProperties(Scanner scan, int landlordID) {
 
-		PropertyDatabase.displayProperties(landlordID);
+		PropertyDB_Messenger.displayProperties(landlordID);
 
 		System.out.println();
 
@@ -892,7 +892,7 @@ public class Main {
 		System.out.print(toEvict);
 		String inputAddress = scan.nextLine();
 
-		PropertyDatabase.evictClient(inputAddress);
+		PropertyDB_Messenger.evictClient(inputAddress);
 
 		System.out.println();
 
@@ -943,23 +943,28 @@ public class Main {
 	 * Method to view entire client database
 	 */
 	public static void processViewClientDB() {
-		ClientDatabase.display();
+		ClientDB_Messenger.display();
 	}
 
 	/**
 	 * Method to view entire landlord database
 	 */
 	public static void processViewLandlordDB() {
-		LandlordDatabase.display();
+		LandlordDB_Messenger.display();
 	}
 
 	/**
 	 * Method to view entire property database
 	 */
 	public static void processViewPropertyDB() {
-		PropertyDatabase.display();
+		PropertyDB_Messenger.display();
 	}
 
+	/**
+	 * Main method that will invoke other methods to display application to users
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 
 		Scanner scan = new Scanner(System.in);

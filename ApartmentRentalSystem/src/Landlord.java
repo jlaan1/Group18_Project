@@ -39,7 +39,7 @@ public class Landlord {
 		setEmail(email);
 
 		// Add landlord to SQLite database
-		LandlordDatabase.insert(landlordID, username, password, firstName, lastName, contactNum, email, age);
+		LandlordDB_Messenger.insert(landlordID, username, password, firstName, lastName, contactNum, email, age);
 	}
 
 	/**

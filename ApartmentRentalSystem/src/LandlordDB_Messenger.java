@@ -11,7 +11,7 @@ import java.sql.Statement;
  * 
  * @author Jialei
  */
-public class LandlordDatabase {
+public class LandlordDB_Messenger {
 
 	/**
 	 * Method to establish connection with SQLite database
@@ -205,10 +205,6 @@ public class LandlordDatabase {
 			System.out.println("Error connecting to SQLite database");
 			e.printStackTrace();
 		}
-
-	}
-
-	public static void main(String[] args) {
 
 	}
 

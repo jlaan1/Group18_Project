@@ -11,7 +11,7 @@ import java.sql.Statement;
  * 
  * @author Jialei
  */
-public class ClientDatabase {
+public class ClientDB_Messenger {
 
 	/**
 	 * Method to establish connection with SQLite database
@@ -318,10 +318,6 @@ public class ClientDatabase {
 			e.printStackTrace();
 		}
 
-	}
-
-	public static void main(String[] args) {
-		display();
 	}
 
 }
